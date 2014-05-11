@@ -20,17 +20,19 @@ Custom object names should accurately and succinctly describe the business objec
 
 They should be written in the singular form, with underscores separating words.
 
-```Bad: StudentPrograms__c```
-
-```Good: Student_Program__c```
+```
+Bad: StudentPrograms__c
+Good: Student_Program__c
+```
 
 Custom field names should follow the same convention as custom object names. 
 In cases where a field represents the same type of data as a field on a different object, 
 use the same name whenever possible
 
-```Bad: Object_1__c.Postal_Code__c, Object_2__c.Zip_Code__c```
-
-```Good: Object_1__c.Postal_Code__c, Object_2__c.Postal_Code__c```
+```
+Bad: Object_1__c.Postal_Code__c, Object_2__c.Zip_Code__c
+Good: Object_1__c.Postal_Code__c, Object_2__c.Postal_Code__c
+```
 
 Master-detail or lookup fields should typically match the corresponding object name. 
 There can be exceptions, typically in the cases where standard objects are used: 
@@ -52,9 +54,10 @@ Class names should be nouns that clearly describe their purpose.
 Don't use abbreviations in the name unless they are obvious and the class name would be too long if not using them. 
 CamelCase should be used for class names, with the first letter capitalized. 
 
-```Bad: revenueScheduler```
-
-```Good: RevenueScheduler```
+```
+Bad: revenueScheduler
+Good: RevenueScheduler
+```
 
 Visualforce controller names should be suffixed with the word Controller, i.e. `DonationPageController`. 
 Similarly, controller extensions should be suffixed with the word Extension. 
