@@ -25,6 +25,9 @@ Bad: StudentPrograms__c
 Good: Student_Program__c
 ```
 
+Don't give a custom object the same name as a standard object. Sure, the API names will be different, 
+but it's impossible to tell them apart when selecting them from a picklist, such as when creating a workflow rule.
+
 Custom field names should follow the same convention as custom object names. 
 In cases where a field represents the same type of data as a field on a different object, 
 use the same name whenever possible
@@ -35,7 +38,7 @@ Good: Object_1__c.Postal_Code__c, Object_2__c.Postal_Code__c
 ```
 
 Master-detail or lookup fields should typically match the corresponding object name. 
-There can be exceptions, typically in the cases where standard objects are used: 
+There can be exceptions, especially in the cases where standard objects are used: 
 for example, if an object represents a Class, and has a lookup to an Account, then the lookup field might be called School.
 
 Some specific cases:
@@ -74,7 +77,7 @@ acct.Name = 'New name';
 }
 ```
 
-Good;
+Good:
 ```
 for (Account acct : accounts) {
     acct.Name = 'New name';
@@ -84,6 +87,20 @@ for (Account acct : accounts) {
 Class methods should be separated by blank lines. 
 
 Blank lines can be used to separate logical sections of code, but this should be done sparingly.
+
+Don't use blank spaces before or after parentheses in method names.
+
+Bad:
+```
+String s = getString ( 1 );
+```
+
+Good:
+```
+String s = getString(1);
+```
+
+
 
 ####Comments
 In order to be useful, comments must accurately describe the code that they are commenting. It is best to avoid 
@@ -113,9 +130,48 @@ for (Account acct : accounts) {
 	accountMap.put(acct.Id, contacts);
 }
 ```
-
+Comments should be clearly written and follow the rules of grammar.
 
 ##<a name="visualforce"></a>Visualforce
+Always indent blocks that span multiple lines.
+
+Bad:
+```
+<div id="block1">
+some text
+</div>
+```
+
+Good:
+```
+<div id="block1">
+    some text
+</div>
+```
+
+When using <apex:> tags, always provide an element ID, as it is necessary to reference the full path to the element 
+using the {!$Component} variable when referencing these tags by ID from javascript.
+
+Bad:
+```
+<apex:pageBlock>
+    <apex:outputText id="outputText"></apex:outputText>
+</apex:pageBlock>
+<script>
+    //This will not work
+    var outputText = document.getElementById('outputText').value;
+</script>
+```
+
+Good:
+```
+<apex:pageBlock id="outputBlock">
+    <apex:outputText id="output"></apex:outputText>
+</apex:pageBlock>
+<script>
+    var outputText = document.getElementById('{!$Component.outputBlock.outputText}').value;
+</script>
+```
 
 ##<a name="other"></a>Other
 
