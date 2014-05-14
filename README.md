@@ -149,7 +149,7 @@ Good:
 </div>
 ```
 
-When using <apex:> tags, always provide an element ID, as it is necessary to reference the full path to the element 
+When using ```<apex:>``` tags, always provide an element ID, as it is necessary to reference the full path to the element 
 using the {!$Component} variable when referencing these tags by ID from javascript.
 
 Bad:
