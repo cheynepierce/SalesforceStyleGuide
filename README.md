@@ -1,6 +1,7 @@
 ##Contents
 * [Introduction](#introduction)
-* [Custom Object and Field Definitions](#objects)
+* [Custom Objects](#objects)
+* [Custom Fields](#fields)
 * [Workflow Rules](#workflow)
 * [Apex](#apex)
 * [Visualforce](#visualforce)
@@ -15,9 +16,8 @@ None of these are hard and fast rules, but the aim is to maximize consistency ac
 in order to make it easier to maintain, easier to add new features, and easier for new administrators and 
 developers to begin working in the environment. 
 
-##<a name="objects"></a>Custom Object and Field Definitions
-Custom object names should accurately and succinctly describe the business object that they represent.
-
+##<a name="objects"></a>Custom Objects
+Custom object names should accurately and succinctly describe the business object that they represent. 
 They should be written in the singular form, with underscores separating words.
 
 ```
@@ -28,7 +28,11 @@ Good: Student_Program__c
 Don't give a custom object the same name as a standard object. Sure, the API names will be different, 
 but it's impossible to tell them apart when selecting them from a picklist, such as when creating a workflow rule.
 
-Custom field names should follow the same convention as custom object names. 
+##<a name="fields"></a>Custom Fields
+Custom field names should follow the same conventions as custom object names. 
+
+If the field's purpose is not completely clear by the name, enter a description in the Help Text area. 
+
 In cases where a field represents the same type of data as a field on a different object, 
 use the same name whenever possible
 
@@ -44,6 +48,11 @@ for example, if an object represents a Class, and has a lookup to an Account, th
 Some specific cases:
 
 * Postal Code fields should always be called Postal Code, to match the standard Salesforce fields, never Zip Code
+
+####Other considerations
+Do not create a new custom field when an equivalent field already exists.
+
+Make fields as specific as possible, so that they always track exactly one piece of information.
 
 ##<a name="workflow"></a>Workflow Rules
 
@@ -90,17 +99,13 @@ Blank lines can be used to separate logical sections of code, but this should be
 
 Don't use blank spaces before or after parentheses in method names.
 
-Bad:
 ```
-String s = getString ( 1 );
-```
-
-Good:
-```
-String s = getString(1);
+Bad: String s = getString ( 1 );
 ```
 
-
+```
+Good: String s = getString(1);
+```
 
 ####Comments
 In order to be useful, comments must accurately describe the code that they are commenting. It is best to avoid 
