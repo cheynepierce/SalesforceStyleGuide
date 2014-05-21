@@ -34,7 +34,10 @@ Custom field names should follow the same conventions as custom object names.
 If the field's purpose is not completely clear by the name, enter a description in the Help Text area. 
 
 In cases where a field represents the same type of data as a field on a different object, 
-use the same name whenever possible
+use the same name whenever possible. Also, define the field in the same way: i.e., make sure text 
+fields representing the same data have the same length, and make sure validation rules are 
+the same. This is especially important when defining lead fields that will map upon conversion, 
+to avoid truncating data.
 
 ```
 Bad: Object_1__c.Postal_Code__c, Object_2__c.Zip_Code__c
@@ -52,7 +55,8 @@ Some specific cases:
 ####Other considerations
 Do not create a new custom field when an equivalent field already exists.
 
-Make fields as specific as possible, so that they always track exactly one piece of information.
+Make fields as specific as possible, so that they always track exactly one piece of information, 
+and don't function as a sort of catch-all field.
 
 ##<a name="workflow"></a>Workflow Rules
 
@@ -137,6 +141,9 @@ for (Account acct : accounts) {
 ```
 Comments should be clearly written and follow the rules of grammar.
 
+####Debug Statements
+
+
 ##<a name="visualforce"></a>Visualforce
 Always indent blocks that span multiple lines.
 
@@ -178,6 +185,9 @@ Good:
 </script>
 ```
 
+When adding a custom CSS file to a page, add it as a Visualforce component, not a static resource. 
+This makes it much easier to edit later on. (not sure how bad this will be for performance)
+
 ##<a name="other"></a>Other
 
 ####Sandboxes
@@ -185,3 +195,8 @@ Good:
 Sandboxes should be named in a way that accurately describes their purpose. 
 For example, a sandbox that is used for development purposes could be called "dev" 
 and a sandbox made for training purposes could be called "training". 
+
+When developing in a sandbox, always use a deployment tool, such as change sets or the metadata API, 
+to move the changes to production, in order to ensure that the customizations are consistent between environments. 
+There is nothing worse than deploying code to production and trying to debug issues that came up as a 
+result of subtle differences between field definitions. 
