@@ -25,13 +25,13 @@ Bad: StudentPrograms__c
 Good: Student_Program__c
 ```
 
-Don't give a custom object the same name as a standard object. Sure, the API names will be different, 
-but it's impossible to tell them apart when selecting them from a picklist, such as when creating a workflow rule.
+Don't give a custom object the same name as a standard object. The API names will be different, 
+but it is still impossible to tell them apart when selecting them from a menu, such as when creating a workflow rule.
 
 ##<a name="fields"></a>Custom Fields
 Custom field names should follow the same conventions as custom object names. 
 
-If the field's purpose is not completely clear by the name, enter a description in the Help Text area. 
+If the field's purpose is not completely clear by the name, enter descriptions in the Help Text and Description areas. 
 
 In cases where a field represents the same type of data as a field on a different object, 
 use the same name whenever possible. Also, define the field in the same way: i.e., make sure text 
@@ -58,12 +58,26 @@ Do not create a new custom field when an equivalent field already exists.
 Make fields as specific as possible, so that they always track exactly one piece of information, 
 and don't function as a sort of catch-all field.
 
-##<a name="workflow"></a>Workflow Rules
+##<a name="workflow"></a>Workflow and Validation Rules
+Be cautious to not accidentally make fields required through validation rules 
+when your intention is to enforce a certain rule only when a value is entered.
+
+```
+Bad: NOT(REGEX(\d{3}-\d{2}-\d{4}, Field__c))
+Good: AND(NOT(ISBLANK(Field__c)), NOT(REGEX(\d{3}-\d{2}-\d{4}, Field__c)))
+```
+
+In the first case, the data will not be considered valid if it is completely blank, 
+which may or not be what you want.
+
+Do not set workflow criteria to "True" unless absolutely necessary.
 
 ##<a name="apex"></a>Apex Code
 Apex code is probably the area of Salesforce where using a set of conventions is the most important. 
-It is far easier to read code that is written in a consistent manner than code that is written haphazardly, using no set of standards.
-Since, with any code, it is probable that someone will have to read the code somewhere down the line, it is imperative to write it in a clean, consistent manner.
+It is far easier to read code that is written in a consistent manner than code that is written haphazardly, 
+using no set of standards.
+With any code, it is probable that someone will have to read the code somewhere down the line, 
+so it is imperative to write it in a clean, consistent manner.
 
 ####Naming Conventions
 Class names should be nouns that clearly describe their purpose. 
@@ -139,7 +153,7 @@ for (Account acct : accounts) {
 	accountMap.put(acct.Id, contacts);
 }
 ```
-Comments should be clearly written and follow the rules of grammar.
+Comments should be clearly written and follow all rules of grammar.
 
 ####Debug Statements
 
@@ -185,9 +199,6 @@ Good:
 </script>
 ```
 
-When adding a custom CSS file to a page, add it as a Visualforce component, not a static resource. 
-This makes it much easier to edit later on. (not sure how bad this will be for performance)
-
 ##<a name="other"></a>Other
 
 ####Sandboxes
@@ -199,4 +210,9 @@ and a sandbox made for training purposes could be called "training".
 When developing in a sandbox, always use a deployment tool, such as change sets or the metadata API, 
 to move the changes to production, in order to ensure that the customizations are consistent between environments. 
 There is nothing worse than deploying code to production and trying to debug issues that came up as a 
-result of subtle differences between field definitions. 
+result of subtle differences between field definitions.
+
+####Installed Apps
+Installed apps are meant to be able to be dropped in to an existing implementation, adding functionality. 
+Try not to reference components from installed apps in areas outside of the app, as it could make it extremely 
+difficult to un-install the app later on.
