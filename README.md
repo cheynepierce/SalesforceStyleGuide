@@ -20,12 +20,14 @@ developers to begin working in the environment.
 Custom object names should accurately and succinctly describe the business object that they represent. 
 They should be written in the singular form, with underscores separating words.
 
+Bad:
 ```
-Bad: StudentPrograms__c
+StudentPrograms__c
 ```
 
+Good:
 ```
-Good: Student_Program__c
+Student_Program__c
 ```
 
 Don't give a custom object the same name or label as a standard object. The API names will be different, 
@@ -45,12 +47,14 @@ fields representing the same data have the same length, and make sure validation
 the same. This is especially important when defining lead fields that will map upon conversion, 
 to avoid truncating data.
 
+Bad:
 ```
-Bad: Object_1__c.Postal_Code__c, Object_2__c.Zip_Code__c
+Object_1__c.Postal_Code__c, Object_2__c.Zip_Code__c
 ```
 
+Good:
 ```
-Good: Object_1__c.Postal_Code__c, Object_2__c.Postal_Code__c
+Object_1__c.Postal_Code__c, Object_2__c.Postal_Code__c
 ```
 
 Master-detail or lookup fields should typically match the corresponding object name. 
@@ -67,12 +71,14 @@ and don't function as a sort of catch-all field.
 Be cautious to not accidentally make fields required through validation rules 
 when your intention is to enforce a certain rule only when a value is entered.
 
+Bad:
 ```
-Bad: NOT(REGEX(\d{3}-\d{2}-\d{4}, Field__c))
+NOT(REGEX(\d{3}-\d{2}-\d{4}, Field__c))
 ```
 
+Good:
 ```
-Good: AND(NOT(ISBLANK(Field__c)), NOT(REGEX(\d{3}-\d{2}-\d{4}, Field__c)))
+AND(NOT(ISBLANK(Field__c)), NOT(REGEX(\d{3}-\d{2}-\d{4}, Field__c)))
 ```
 
 In the first case, the data will not be considered valid if it is completely blank, 
@@ -93,12 +99,14 @@ Class names should be nouns that clearly describe their purpose.
 Don't use abbreviations in the name unless they are obvious and the class name would be too long if not using them. 
 CamelCase should be used for class names, with the first letter capitalized. 
 
+Bad:
 ```
-Bad: revenueScheduler
+revenueScheduler
 ```
 
+Good:
 ```
-Good: RevenueScheduler
+RevenueScheduler
 ```
 
 Visualforce controller names should be suffixed with the word Controller, i.e. `DonationPageController`. 
