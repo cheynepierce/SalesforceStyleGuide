@@ -22,35 +22,40 @@ They should be written in the singular form, with underscores separating words.
 
 ```
 Bad: StudentPrograms__c
+```
+
+```
 Good: Student_Program__c
 ```
 
-Don't give a custom object the same name as a standard object. The API names will be different, 
+Don't give a custom object the same name or label as a standard object. The API names will be different, 
 but it is still impossible to tell them apart when selecting them from a menu, such as when creating a workflow rule.
 
 ##<a name="fields"></a>Custom Fields
 Custom field names should follow the same conventions as custom object names. 
 
-If the field's purpose is not completely clear by the name, enter descriptions in the Help Text and Description areas. 
+Ideally, the field's purpose should be clear from the name. 
+In cases where it is not, enter descriptions in the Help Text and Description areas. 
 
 In cases where a field represents the same type of data as a field on a different object, 
-use the same name whenever possible. Also, define the field in the same way: i.e., make sure text 
+use the same name whenever possible. For example, Postal Code fields should always be called 
+Postal Code, instead of Zip or Zip Code, since standard Postal Code fields already exist. 
+Also, define the field in the same way: i.e., make sure text 
 fields representing the same data have the same length, and make sure validation rules are 
 the same. This is especially important when defining lead fields that will map upon conversion, 
 to avoid truncating data.
 
 ```
 Bad: Object_1__c.Postal_Code__c, Object_2__c.Zip_Code__c
+```
+
+```
 Good: Object_1__c.Postal_Code__c, Object_2__c.Postal_Code__c
 ```
 
 Master-detail or lookup fields should typically match the corresponding object name. 
 There can be exceptions, especially in the cases where standard objects are used: 
 for example, if an object represents a Class, and has a lookup to an Account, then the lookup field might be called School.
-
-Some specific cases:
-
-* Postal Code fields should always be called Postal Code, to match the standard Salesforce fields, never Zip Code
 
 ####Other considerations
 Do not create a new custom field when an equivalent field already exists.
@@ -64,13 +69,17 @@ when your intention is to enforce a certain rule only when a value is entered.
 
 ```
 Bad: NOT(REGEX(\d{3}-\d{2}-\d{4}, Field__c))
+```
+
+```
 Good: AND(NOT(ISBLANK(Field__c)), NOT(REGEX(\d{3}-\d{2}-\d{4}, Field__c)))
 ```
 
 In the first case, the data will not be considered valid if it is completely blank, 
 which may or not be what you want.
 
-Do not set workflow criteria to "True" unless absolutely necessary.
+Do not set workflow criteria to "True" unless absolutely necessary. Always use more specific 
+criteria, when possible, since it makes it the rule's purpose clearer.
 
 ##<a name="apex"></a>Apex Code
 Apex code is probably the area of Salesforce where using a set of conventions is the most important. 
@@ -86,6 +95,9 @@ CamelCase should be used for class names, with the first letter capitalized.
 
 ```
 Bad: revenueScheduler
+```
+
+```
 Good: RevenueScheduler
 ```
 
@@ -113,7 +125,7 @@ for (Account acct : accounts) {
 
 Class methods should be separated by blank lines. 
 
-Blank lines can be used to separate logical sections of code, but this should be done sparingly.
+Sparingly, blank lines can be used to separate logical sections of code.
 
 Don't use blank spaces before or after parentheses in method names.
 
@@ -144,7 +156,7 @@ for (Account acct : accounts) {
 
 Good:
 ```
-//Construct a map so that we can easily access a list of contacts based on AccountId
+//Construct a map that will allow us to easily access a list of contacts based on AccountId
 for (Account acct : accounts) {
     List<Contact> contacts = new List<Contact>();
 	for (Contact c : acct.Contacts) {
@@ -156,7 +168,26 @@ for (Account acct : accounts) {
 Comments should be clearly written and follow all rules of grammar.
 
 ####Debug Statements
+Use debug statements at critical points, such as in catch blocks, so that when problems 
+arise in production, it is easier to find their source. 
 
+Bad:
+```
+try {
+    http.send(req);
+} catch (Exception e) { 
+	//Do nothing
+}
+```
+
+Good:
+```
+try {
+	http.send(req);
+} catch (Exception e) {
+	system.debug('Error sending http request: ' + e);
+}
+```
 
 ##<a name="visualforce"></a>Visualforce
 Always indent blocks that span multiple lines.
@@ -176,7 +207,7 @@ Good:
 ```
 
 When using ```<apex:>``` tags, always provide an element ID, as it is necessary to reference the full path to the element 
-using the {!$Component} variable when referencing these tags by ID from javascript.
+using the {!$Component} variable when referencing these tags by ID from javascript. 
 
 Bad:
 ```
@@ -214,5 +245,5 @@ result of subtle differences between field definitions.
 
 ####Installed Apps
 Installed apps are meant to be able to be dropped in to an existing implementation, adding functionality. 
-Try not to reference components from installed apps in areas outside of the app, as it could make it extremely 
+Try not to reference components from installed apps in areas outside of the app, as it can make it extremely 
 difficult to un-install the app later on.
