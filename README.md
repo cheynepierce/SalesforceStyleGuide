@@ -13,7 +13,7 @@ One of the great things about Salesforce is that it is intuitive and generally e
 this ease of use can be greatly diminished if the conventions used across a Salesforce instance are inconsistent. 
 This document provides some basic guidelines for object naming conventions, Apex code style, etc. 
 None of these are hard and fast rules, but the aim is to maximize consistency across a Salesforce deployment 
-in order to make it easier to maintain, easier to add new features, and easier for new administrators and 
+in order to make it easier to maintain and add new features, as well as easier for new administrators and 
 developers to begin working in the environment. 
 
 ##<a name="objects"></a>Custom Objects
@@ -30,6 +30,12 @@ Good:
 Student_Program__c
 ```
 
+Object labels should match their name, with spaces taking the place of underscores.
+
+```
+Name: Student_Program__c, Label: Student Program
+```
+
 Don't give a custom object the same name or label as a standard object. The API names will be different, 
 but it is still impossible to tell them apart when selecting them from a menu, such as when creating a workflow rule.
 
@@ -38,6 +44,9 @@ Custom field names should follow the same conventions as custom object names.
 
 Ideally, the field's purpose should be clear from the name. 
 In cases where it is not, enter descriptions in the Help Text and Description areas. 
+It's okay to make frequent use of the Description field, since it can be helpful to have 
+a high level of documentation, but only use the Help Text if it's absolutely necessary. 
+The Help Text appears on the page layout, and may not be as useful if too much information is provided.
 
 In cases where a field represents the same type of data as a field on a different object, 
 use the same name whenever possible. For example, Postal Code fields should always be called 
@@ -57,15 +66,9 @@ Good:
 Object_1__c.Postal_Code__c, Object_2__c.Postal_Code__c
 ```
 
-Master-detail or lookup fields should typically match the corresponding object name. 
-There can be exceptions, especially in the cases where standard objects are used: 
+Unless there is a compelling reason to do otherwise, name master-detail or lookup fields to match the corresponding object name. 
+There are often exceptions here, especially in the cases where standard objects are used: 
 for example, if an object represents a Class, and has a lookup to an Account, then the lookup field might be called School.
-
-####Other considerations
-Do not create a new custom field when an equivalent field already exists.
-
-Make fields as specific as possible, so that they always track exactly one piece of information, 
-and don't function as a sort of catch-all field.
 
 ##<a name="workflow"></a>Workflow and Validation Rules
 Be cautious to not accidentally make fields required through validation rules 
@@ -73,16 +76,21 @@ when your intention is to enforce a certain rule only when a value is entered.
 
 Bad:
 ```
-NOT(REGEX(\d{3}-\d{2}-\d{4}, Field__c))
+NOT(REGEX(\d{3}-\d{2}-\d{4}, Phone))
 ```
 
 Good:
 ```
-AND(NOT(ISBLANK(Field__c)), NOT(REGEX(\d{3}-\d{2}-\d{4}, Field__c)))
+AND(NOT(ISBLANK(Phone)), NOT(REGEX(\d{3}-\d{2}-\d{4}, Phone)))
 ```
 
 In the first case, the data will not be considered valid if it is completely blank, 
 which may or not be what you want.
+
+Give workflow rules names that clearly describe their purpose. 
+If further details are needed, always include a description. 
+What you are doing may seem obvious now, but for all but the simplest rules, 
+it will not be obvious 6 months down the road.
 
 Do not set workflow criteria to "True" unless absolutely necessary. Always use more specific 
 criteria, when possible, since it makes it the rule's purpose clearer.
@@ -173,7 +181,7 @@ for (Account acct : accounts) {
 	accountMap.put(acct.Id, contacts);
 }
 ```
-Comments should be clearly written and follow all rules of grammar.
+Comments should be clearly written and follow all grammatical rules.
 
 ####Debug Statements
 Use debug statements at critical points, such as in catch blocks, so that when problems 
@@ -248,7 +256,7 @@ and a sandbox made for training purposes could be called "training".
 
 When developing in a sandbox, always use a deployment tool, such as change sets or the metadata API, 
 to move the changes to production, in order to ensure that the customizations are consistent between environments. 
-There is nothing worse than deploying code to production and trying to debug issues that came up as a 
+It can be frustrating to deploy code to production and have to debug issues that came up as a 
 result of subtle differences between field definitions.
 
 ####Installed Apps
