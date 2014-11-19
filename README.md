@@ -70,6 +70,22 @@ Unless there is a compelling reason to do otherwise, name master-detail or looku
 There are often exceptions here, especially in the cases where standard objects are used: 
 for example, if an object represents a Class, and has a lookup to an Account, then the lookup field might be called School.
 
+####Formula Fields
+Be careful to account for potentially invalid values for formula fields. In the UI, these will display with the text "#Error", 
+but they may cause unit tests to fail, if they populate records in such a way as to cause formula fields to have invalid values. 
+A common example is divide-by-zero error. When using formulas that have variables as the divisor, make sure that the formula 
+checks that the divisor is not equal to zero. 
+
+Bad:
+```
+Number_A__c / Number_B__c
+```
+
+Good:
+```
+IF(Number_B__c != 0, Number_A__c / Number_B__c, null)
+```
+
 ##<a name="workflow"></a>Workflow and Validation Rules
 Be cautious to not accidentally make fields required through validation rules 
 when your intention is to enforce a certain rule only when a value is entered.
