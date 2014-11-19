@@ -70,21 +70,6 @@ Unless there is a compelling reason to do otherwise, name master-detail or looku
 There are often exceptions here, especially in the cases where standard objects are used: 
 for example, if an object represents a Class, and has a lookup to an Account, then the lookup field might be called School.
 
-####Formula Fields
-Be careful to account for potentially invalid values for formula fields. In the UI, these will display with the text "#Error", 
-but they may cause unit tests to fail, if they populate records in such a way as to cause formula fields to have invalid values. 
-A common example is divide-by-zero error. When using formulas that have variables as the divisor, make sure that the formula 
-checks that the divisor is not equal to zero. 
-
-Bad:
-```
-Number_A__c / Number_B__c
-```
-
-Good:
-```
-IF(Number_B__c != 0, Number_A__c / Number_B__c, null)
-```
 
 ##<a name="workflow"></a>Workflow and Validation Rules
 Be cautious to not accidentally make fields required through validation rules 
@@ -110,6 +95,20 @@ it will not be obvious 6 months down the road.
 
 Do not set workflow criteria to "True" unless absolutely necessary. Always use more specific 
 criteria, when possible, since it makes it the rule's purpose clearer.
+
+Be careful to account for potentially invalid values for field update formulas. 
+A common example is a divide-by-zero error. When using formulas that have variables as the divisor, make sure that the formula 
+checks that the divisor is not equal to zero. 
+
+Bad:
+```
+Number_A__c / Number_B__c
+```
+
+Good:
+```
+IF(Number_B__c != 0, Number_A__c / Number_B__c, null)
+```
 
 ##<a name="apex"></a>Apex Code
 Apex code is probably the area of Salesforce where using a set of conventions is the most important. 
