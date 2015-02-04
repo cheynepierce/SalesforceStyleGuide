@@ -43,10 +43,10 @@ but it is still impossible to tell them apart when selecting them from a menu, s
 Custom field names should follow the same conventions as custom object names. 
 
 Ideally, the field's purpose should be clear from the name. 
-In cases where it is not, enter descriptions in the Help Text and Description areas. 
+In cases where it is not, enter descriptions in the Help Text and/or Description areas. 
 It's okay to make frequent use of the Description field, since it can be helpful to have 
-a high level of documentation, but only use the Help Text if it's absolutely necessary. 
-The Help Text appears on the page layout, and may not be as useful if too much information is provided.
+a high level of documentation, but don't overuse the Help Text,  since it appears 
+on the page layout, and may not be as useful if too much information is provided.
 
 In cases where a field represents the same type of data as a field on a different object, 
 use the same name whenever possible. For example, Postal Code fields should always be called 
@@ -67,9 +67,8 @@ Object_1__c.Postal_Code__c, Object_2__c.Postal_Code__c
 ```
 
 Unless there is a compelling reason to do otherwise, name master-detail or lookup fields to match the corresponding object name. 
-There are often exceptions here, especially in the cases where standard objects are used: 
+There are often exceptions here, especially in cases where standard objects are used: 
 for example, if an object represents a Class, and has a lookup to an Account, then the lookup field might be called School.
-
 
 ##<a name="workflow"></a>Workflow and Validation Rules
 Be cautious to not accidentally make fields required through validation rules 
@@ -94,11 +93,11 @@ What you are doing may seem obvious now, but for all but the simplest rules,
 it will not be obvious 6 months down the road.
 
 Do not set workflow criteria to "True" unless absolutely necessary. Always use more specific 
-criteria, when possible, since it makes it the rule's purpose clearer.
+criteria, when possible, since it makes the rule's purpose clearer.
 
 Be careful to account for potentially invalid values for field update formulas. 
 A common example is a divide-by-zero error. When using formulas that have variables as the divisor, make sure that the formula 
-checks that the divisor is not equal to zero. 
+checks that the divisor is not equal to zero.
 
 Bad:
 ```
